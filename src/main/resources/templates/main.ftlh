@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Init page</title>
-</head>
-<body>
+<#import "parts/common.ftlh" as c>
+<#import "parts/login.ftlh" as l>
+<@c.page>
     <div>This is main page!!</div>
     <div>
-        <form action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="${_csrf.token}">
-            <input type="submit" value="Sing Out"/>
-        </form>
+        <@l.logout />
+        <span>
+            <a href="/user">User List</a>
+        </span>
     </div>
     <div>Add new message</div>
     <div>
@@ -36,6 +32,6 @@
             <i>${message.tag}</i>
             <strong>${message.authorName}</strong>
         </div>
+    <#else>No message
     </#list>
-</body>
-</html>
+</@c.page>
