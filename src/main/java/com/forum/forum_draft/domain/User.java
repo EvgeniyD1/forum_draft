@@ -49,6 +49,10 @@ public class User implements UserDetails {
     @Column(name = "role_name")
     private Set<Role> roles;
 
+    public boolean isAdmin(){
+        return roles.contains(Role.ADMIN);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
