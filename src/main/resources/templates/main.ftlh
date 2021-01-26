@@ -40,7 +40,7 @@
             <div class="card my-3">
                 <div class="card-img-top alt=">
                     <#if message.filename??>
-                        <img src="/img/${message.filename}">
+                        <img src="/img/${message.filename}" class="img-fluid">
                     </#if>
                 </div>
                 <div class="m-2">

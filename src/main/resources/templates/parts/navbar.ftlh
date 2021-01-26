@@ -1,12 +1,13 @@
 <#include "security.ftlh">
 <#import "login.ftlh" as l>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-    <a class="navbar-brand my-0 mx-3 h1" href="/">
-        <img src="/static/logo.png" width="100" height="50" class="d-inline-block align-middle mx-2"
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand my-0 h1" href="/">
+        <img src="/static/logo-2.png" width="40" height="40" class="d-inline-block align-content-center"
              alt="" loading="lazy">
-        <span class="text-white-50 align-middle">Forum_Draft</span>
+        <span class="text-white-50">Forum_Draft</span>
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -23,8 +24,20 @@
                     <a class="nav-link" href="/user">User List</a>
                 </li>
             </#if>
+            <li class="nav-item">
+                <form class="form-inline ml-auto" method="get" action="/main">
+                    <input type="search" name="search" class="form-control ml-sm-2" placeholder="Search" value="${search!}"/>
+                    <button type="submit" class="btn btn-outline-info ml-2">Search</button>
+                </form>
+            </li>
         </ul>
-        <span class="navbar-text mx-3 ml-auto">${name}</span>
-        <span class="mx-3"><@l.logout /></span>
+        <ul class="navbar-nav ml-auto">
+            <li>
+                <a class="navbar-text mx-2">${name}</a>
+            </li>
+            <li>
+                <@l.logout />
+            </li>
+        </ul>
     </div>
 </nav>
