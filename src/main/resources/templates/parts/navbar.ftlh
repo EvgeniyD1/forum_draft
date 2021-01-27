@@ -1,8 +1,8 @@
 <#include "security.ftlh">
 <#import "login.ftlh" as l>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a class="navbar-brand my-0 h1" href="/">
-        <img src="/static/logo-2.png" width="40" height="40" class="d-inline-block align-content-center"
+        <img src="/static/logo-2.png" width="30" height="30" class="d-inline-block align-content-center"
              alt="" loading="lazy">
         <span class="text-white-50">Forum_Draft</span>
     </a>

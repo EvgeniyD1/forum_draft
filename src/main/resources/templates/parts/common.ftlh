@@ -12,8 +12,10 @@
 </head>
 <body>
 <#include "navbar.ftlh">
-<div class="container mt-3">
-<#nested>
+<div class="container style1" <#--style="background: aquamarine"-->>
+    <div class="py-3 <#--jumbotron-->">
+        <#nested>
+    </div>
 </div>
 
 <#--jQuery, Popper.js, and Bootstrap JS-->

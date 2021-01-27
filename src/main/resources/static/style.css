@@ -1,3 +1,7 @@
-body{
-    color: blue;
+body {
+    padding-top: 55px;
+}
+.style1{
+    background-color: bisque;
+    color: slategray;
 }

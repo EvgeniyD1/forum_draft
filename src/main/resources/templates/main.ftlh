@@ -1,13 +1,5 @@
 <#import "parts/common.ftlh" as c>
 <@c.page>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <form class="form-inline" method="get" action="/main">
-                <input type="text" name="search" class="form-control" placeholder="Search" value="${search!}"/>
-                <button type="submit" class="btn btn-primary ml-2">Find</button>
-            </form>
-        </div>
-    </div>
     <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
        aria-controls="collapseExample">
         Add new message
