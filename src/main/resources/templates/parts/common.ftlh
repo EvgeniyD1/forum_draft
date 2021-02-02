@@ -13,7 +13,7 @@
 <body>
 <#include "navbar.ftlh">
 <div class="container style1" <#--style="background: aquamarine"-->>
-    <div class="py-3 <#--jumbotron-->">
+    <div class="py-4 <#--jumbotron-->">
         <#nested>
     </div>
 </div>

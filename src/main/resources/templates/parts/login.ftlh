@@ -14,12 +14,19 @@
             </div>
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-outline-info col-sm-2 my-1">
             <#if isRegisterForm>
                 Create
             <#else>Sign in
             </#if></button>
-        <#if !isRegisterForm><a href="/registration">Create an account</a></#if>
+        <#if !isRegisterForm>
+            <div>
+                <form>
+                    <input class="btn btn-outline-info col-sm-2 my-1" type="button" value="Create an account"
+                           onClick='location.href="/registration"'>
+                </form>
+            </div>
+        </#if>
     </form>
 </#macro>
 

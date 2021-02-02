@@ -21,7 +21,7 @@
             </li>
             <#if isAdmin>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user">User List</a>
+                    <a class="nav-link" href="/admin">Admin Page</a>
                 </li>
             </#if>
             <li class="nav-item">
@@ -33,7 +33,12 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li>
-                <a class="navbar-text mx-2">${name}</a>
+<#--                <a class="nav-link">${name}</a>-->
+                <#if name ="unknown">
+                    <a class="nav-link">${name}</a>
+                    <#else >
+                    <a class="nav-link" href="/user/${user.id}">${name}</a>
+                </#if>
             </li>
             <li>
                 <@l.logout />
