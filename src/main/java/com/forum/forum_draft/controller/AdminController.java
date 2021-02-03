@@ -42,7 +42,7 @@ public class AdminController {
     }
 
     @PostMapping
-    public String serSave(@RequestParam String username,
+    public String userSave(@RequestParam String username,
                           @RequestParam Map<String,String> form,
                           @RequestParam("userId") User user){
         user.setUsername(username);

@@ -1,16 +1,30 @@
 <#import "parts/common.ftlh" as c>
 <@c.page>
-    <div>User Page</div>
-    <div class="form-inline">
-
+    <div class="d-flex p-2">
+        <div class="d-flex flex-row">
+            <div class="p-2">
+                <img src="/static/logo-2.png" width="300" height="300" class="img-fluid">
+            </div>
+        </div>
+        <div class="d-flex flex-column">
+            <div class="d-flex flex-row">
+                <div class="p-2" style="width: 100px">Name</div>
+                <div class="p-2">${user.username}</div>
+            </div>
+            <div class="d-flex flex-row">
+                <div class="p-2" style="width: 100px">EMail</div>
+                <div class="p-2">Flex элемент 2</div>
+            </div>
+            <div class="d-flex flex-row">
+                <div class="p-2" style="width: 100px">Phone Number</div>
+                <div class="p-2">Flex элемент 2</div>
+            </div>
+        </div>
     </div>
-    <table>
-        <thead>
-        <rt>Name</rt>
-        </thead>
-        <tbody>
-        <td>${user.username}</td>
-        </tbody>
-    </table>
-    <button type="submit">Update</button>
+    <div>
+        <form>
+            <input class="btn btn-outline-info ml-3" type="button" value="Edit"
+                   onClick='location.href="/user/userPageEdit/${user.id}"'>
+        </form>
+    </div>
 </@c.page>}
