@@ -41,6 +41,13 @@
                 </#if>
             </li>
             <li>
+                <#if name ="unknown">
+                <#else >
+                    <img src="/img/${user.pictureName}" width="30" height="30" class="rounded-circle mt-1 mr-2 "
+                         style="object-fit: cover">
+                </#if>
+            </li>
+            <li>
                 <@l.logout />
             </li>
         </ul>

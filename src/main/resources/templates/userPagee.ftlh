@@ -3,7 +3,7 @@
     <div class="d-flex p-2">
         <div class="d-flex flex-row">
             <div class="p-2">
-                <img src="/static/logo-2.png" width="300" height="300" class="img-fluid">
+                <img src="/img/${user.pictureName}" width="300" height="300" class="img-fluid">
             </div>
         </div>
         <div class="d-flex flex-column">
@@ -13,11 +13,11 @@
             </div>
             <div class="d-flex flex-row">
                 <div class="p-2" style="width: 100px">EMail</div>
-                <div class="p-2">Flex элемент 2</div>
+                <div class="p-2">${user.email}</div>
             </div>
             <div class="d-flex flex-row">
                 <div class="p-2" style="width: 100px">Phone Number</div>
-                <div class="p-2">Flex элемент 2</div>
+                <div class="p-2">${user.phoneNumber}</div>
             </div>
         </div>
     </div>

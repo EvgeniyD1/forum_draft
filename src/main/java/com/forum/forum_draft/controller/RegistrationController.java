@@ -33,6 +33,9 @@ public class RegistrationController {
         }
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
+        user.setEmail("empty");
+        user.setPhoneNumber("empty");
+        user.setPictureName("logo-2.png");
         userRepository.save(user);
         return "redirect:/login";
 

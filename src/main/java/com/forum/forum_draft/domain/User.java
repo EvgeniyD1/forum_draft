@@ -37,6 +37,15 @@ public class User implements UserDetails {
     @Column
     private boolean active;
 
+    @Column
+    private String email;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "picture_name")
+    private String pictureName;
+
 //    без enum
 //    @ElementCollection
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  fetch = FetchType.EAGER, orphanRemoval = true)
