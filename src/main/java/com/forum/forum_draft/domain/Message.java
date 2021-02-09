@@ -17,7 +17,8 @@ import javax.persistence.Table;
 @Table(name = "m_messages")
 public class Message {
 
-    public Message(String text, String tag, User user) {
+    public Message(String topicName, String text, String tag, User user) {
+        this.topicName = topicName;
         this.text = text;
         this.tag = tag;
         this.author = user;
@@ -35,6 +36,9 @@ public class Message {
 
     @Column
     private String tag;
+
+    @Column(name = "topic_name")
+    private String topicName;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

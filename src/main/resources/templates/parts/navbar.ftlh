@@ -26,14 +26,14 @@
             </#if>
             <li class="nav-item">
                 <form class="form-inline ml-auto" method="get" action="/main">
-                    <input type="search" name="search" class="form-control ml-sm-2" placeholder="Search" value="${search!}"/>
+                    <input type="search" name="search" class="form-control ml-sm-2" placeholder="Search"
+                           value="${search!}"/>
                     <button type="submit" class="btn btn-outline-info ml-2">Search</button>
                 </form>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             <li>
-<#--                <a class="nav-link">${name}</a>-->
                 <#if name ="unknown">
                     <a class="nav-link">${name}</a>
                     <#else >
@@ -44,7 +44,7 @@
                 <#if name ="unknown">
                 <#else >
                     <img src="/img/${user.pictureName}" width="30" height="30" class="rounded-circle mt-1 mr-2 "
-                         style="object-fit: cover">
+                         style="object-fit: cover" alt="">
                 </#if>
             </li>
             <li>

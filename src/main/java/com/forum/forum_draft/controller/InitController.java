@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +41,7 @@ public class InitController {
         if (search != null && !search.isEmpty()) {
             messages = messageRepository.findByTag(search);
         } else {
-            messages = messageRepository.findAll();
+            messages = messageRepository.fndAllMessagesDesc();
         }
         model.addAttribute("messages", messages);
         model.addAttribute("search", search);
@@ -51,10 +52,11 @@ public class InitController {
     @PostMapping("/main")
     public String addNewMessage(
             @AuthenticationPrincipal User user,
+            @RequestParam String topicName,
             @RequestParam String text,
             @RequestParam String tag, Model model,
             @RequestParam("file") MultipartFile file) throws IOException {
-        Message message = new Message(text, tag, user);
+        Message message = new Message(topicName, text, tag, user);
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -68,9 +70,15 @@ public class InitController {
         }
 
         messageRepository.save(message);
-        List<Message> messages = messageRepository.findAll();
+        List<Message> messages = messageRepository.fndAllMessagesDesc();
         model.addAttribute("messages", messages);
         return "main";
+    }
+
+    @GetMapping("/topic/{message}")
+    public String getTopic(@PathVariable Message message, Model model){
+        model.addAttribute("message", message);
+        return "topic";
     }
 
 

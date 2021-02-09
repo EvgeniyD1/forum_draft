@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -32,7 +33,7 @@ public class UserController {
 
     @GetMapping("{user}")
     public String userList(@PathVariable User user, Model model) {
-        model.addAttribute("username", user.getUsername());
+        model.addAttribute("user", user);
         return "userPagee";
     }
 

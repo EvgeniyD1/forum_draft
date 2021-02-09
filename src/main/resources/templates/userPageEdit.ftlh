@@ -1,25 +1,6 @@
 <#import "parts/common.ftlh" as c>
 <@c.page>
     <div>User Editor</div>
-<#--    <form action="/user" method="post">
-        <label>
-            <input type="text" name="username" value="${user.username}">username
-        </label>
-        <label>
-            <input type="text" name="email" value="${user.email}">email
-        </label>
-        <label>
-            <input type="text" name="phoneNumber" value="${user.phoneNumber}">phoneNumber
-        </label>
-        <label>
-            <input type="file" name="phoneNumber" value="${user.phoneNumber}">phoneNumber
-        </label>
-        <label>
-            <input type="hidden" name="userId" value="${user.id}">
-        </label>
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <button type="submit">Save</button>
-    </form>-->
     <div class="form-group">
         <form action="/user" method="post" enctype="multipart/form-data">
             <div class="form-group">
