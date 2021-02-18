@@ -15,18 +15,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Controller
-public class InitController {
+public class MainController {
 
     @Value("${upload.path}")
     private String uploadPath;
 
     private final MessageRepository messageRepository;
 
-    public InitController(MessageRepository messageRepository) {
+    public MainController(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
     }
 
@@ -68,18 +70,18 @@ public class InitController {
             file.transferTo(new File(uploadPath.concat("/") + newFileName));
             message.setFilename(newFileName);
         }
-
+        message.setTime(new Timestamp(new Date().getTime()));
         messageRepository.save(message);
         List<Message> messages = messageRepository.fndAllMessagesDesc();
         model.addAttribute("messages", messages);
         return "main";
     }
 
-    @GetMapping("/topic/{message}")
+    /*@GetMapping("/topic/{message}")
     public String getTopic(@PathVariable Message message, Model model){
         model.addAttribute("message", message);
         return "topic";
-    }
+    }*/
 
 
 }

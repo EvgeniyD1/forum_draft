@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 @Entity
@@ -39,6 +43,9 @@ public class Message {
 
     @Column(name = "topic_name")
     private String topicName;
+
+    @Column
+    private Timestamp time;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

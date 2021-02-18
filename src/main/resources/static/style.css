@@ -2,10 +2,15 @@ body {
     padding-top: 55px;
 }
 .style1{
-    background-color: bisque;
-    color: slategray;
+    background-color: white;
+    color: black;
 }
 .bd-highlight {
-    /*background-color: rgba(86,61,124,0.15);*/
     border: 1px solid rgba(86,61,124,0.15);
+}
+.style-text-height{
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden
 }
