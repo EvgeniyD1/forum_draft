@@ -1,3 +1,4 @@
 Ctrl + Alt + l - выравнивание кода
-Crtl + Alt + o - удалить ненужные импорты
-Ctrl + Shift + F9
+Ctrl + Alt + o - удалить ненужные импорты
+Ctrl + Shift + F9 - обновить
+Ctrl + Shift + o - переводчик
