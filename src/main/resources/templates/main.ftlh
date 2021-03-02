@@ -1,4 +1,5 @@
 <#import "parts/common.ftlh" as c>
+<#include "parts/security.ftlh">
 <@c.page>
     <a class="btn btn-outline-info mx-3 mb-2" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
        aria-controls="collapseExample">
@@ -78,6 +79,9 @@
                         <small class="text-muted">${message.time}</small>
                         <small class="text-muted">${message.authorName}</small>
                         <small class="text-muted"> #${message.tag}</small>
+                        <#if name == message.authorName>
+                            <br><a href="/main/update/${message.id}" class="badge badge-info">update</a>
+                        </#if>
                     </div>
                 </div>
             </div>

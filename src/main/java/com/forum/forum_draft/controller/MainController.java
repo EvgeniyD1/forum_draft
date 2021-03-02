@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,11 +77,38 @@ public class MainController {
         return "main";
     }
 
-    /*@GetMapping("/topic/{message}")
-    public String getTopic(@PathVariable Message message, Model model){
+    @GetMapping("/main/update/{message}")
+    public String getUpdateMessage(
+            @PathVariable Message message,
+            Model model){
         model.addAttribute("message", message);
-        return "topic";
-    }*/
+        return "updateMessage";
+    }
+
+    @PostMapping("/main/update/{message}")
+    public String updateMessage(
+            @PathVariable Message message,
+            @RequestParam String topicName,
+            @RequestParam String text,
+            @RequestParam String tag, Model model,
+            @RequestParam("file") MultipartFile file) throws IOException{
+        message.setTopicName(topicName);
+        message.setText(text);
+        message.setTag(tag);
+        message.setTime(new Timestamp(new Date().getTime()));
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            String uuid = UUID.randomUUID().toString();
+            String newFileName = uuid + "." + file.getOriginalFilename();
+            file.transferTo(new File(uploadPath.concat("/") + newFileName));
+            message.setFilename(newFileName);
+        }
+        messageRepository.save(message);
+        return "redirect:/main";
+    }
 
 
 }
