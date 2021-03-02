@@ -13,6 +13,14 @@
                 <input type="password" name="password" class="form-control" placeholder="password"/>
             </div>
         </div>
+        <#if isRegisterForm>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email:</label>
+            <div class="col-sm-5 my-1">
+                <input type="email" name="email" class="form-control" placeholder="email@email.com"/>
+            </div>
+        </div>
+        </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <button type="submit" class="btn btn-outline-info col-sm-2 my-1">
             <#if isRegisterForm>

@@ -46,6 +46,9 @@ public class User implements UserDetails {
     @Column(name = "picture_name")
     private String pictureName;
 
+    @Column(name = "activation_code")
+    private String activationCode;
+
 //    без enum
 //    @ElementCollection
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  fetch = FetchType.EAGER, orphanRemoval = true)
