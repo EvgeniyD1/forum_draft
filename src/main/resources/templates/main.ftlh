@@ -1,21 +1,40 @@
 <#import "parts/common.ftlh" as c>
 <#include "parts/security.ftlh">
 <@c.page>
-    <a class="btn btn-outline-info mx-3 mb-2" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+    <a class="btn btn-outline-info mx-3 mb-2" data-toggle="collapse" href="#collapseExample" role="button"
+       aria-expanded="false"
        aria-controls="collapseExample">
         Add new message
     </a>
-    <div class="collapse mx-3" id="collapseExample">
+    <div class="collapse <#if message??>show</#if> mx-3" id="collapseExample">
         <div class="form-group my-3">
             <form method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="topicName" placeholder="Topic"/>
+                    <input type="text" class="form-control ${(topicNameError??)?string('is-invalid','')}"
+                           value="<#if message??>${message.topicName}</#if>" name="topicName" placeholder="Topic"/>
+                    <#if topicNameError??>
+                        <div class="invalid-feedback">
+                            ${topicNameError}
+                        </div>
+                    </#if>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="text" placeholder="Message"/>
+                    <input type="text" class="form-control ${(textError??)?string('is-invalid','')}"
+                           value="<#if message??>${message.text}</#if>" name="text" placeholder="Message"/>
+                    <#if textError??>
+                        <div class="invalid-feedback">
+                            ${textError}
+                        </div>
+                    </#if>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="tag" placeholder="Tag"/>
+                    <input type="text" class="form-control ${(tagError??)?string('is-invalid','')}"
+                           value="<#if message??>${message.tag}</#if>" name="tag" placeholder="Tag"/>
+                    <#if tagError??>
+                        <div class="invalid-feedback">
+                            ${tagError}
+                        </div>
+                    </#if>
                 </div>
                 <div class="form-group">
                     <div class="custom-file">
@@ -67,7 +86,7 @@
                              style="object-fit: cover">
                     <#else >
                         <img src="/static/logo-2.png" class="card-img" alt="" height="190"
-                             <#--style="object-fit: cover-->>
+                                <#--style="object-fit: cover-->>
                     </#if>
                     <div class="card-body py-1 px-1">
                         <h5 class="card-title my-0<#--text-truncate-->">

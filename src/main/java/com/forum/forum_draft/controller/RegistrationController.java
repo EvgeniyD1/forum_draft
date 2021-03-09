@@ -4,9 +4,13 @@ import com.forum.forum_draft.domain.User;
 import com.forum.forum_draft.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 public class RegistrationController {
@@ -23,12 +27,24 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Model model){
-        if (!userService.addUser(user)) {
-            model.addAttribute("message", "User exist");
+    public String addUser(@Valid User user, BindingResult bindingResult, Model model){
+        if (user.getPassword2().isEmpty()){
+            model.addAttribute("password2Error", "password confirmation cannot be empty");
+        }
+        if (user.getPassword()!=null && !user.getPassword().equals(user.getPassword2())){
+            model.addAttribute("passwordError","password are different");
             return "registration";
         }
-        return "redirect:/login";
+        if (bindingResult.hasErrors()){
+            Map<String, String> registrationErrors = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(registrationErrors);
+            return "registration";
+        }
+        if (!userService.addUser(user)) {
+            model.addAttribute("usernameError", "User exist");
+            return "registration";
+        }
+        return "verify";
     }
 
     @GetMapping("/activate/{code}")

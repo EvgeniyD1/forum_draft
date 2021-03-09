@@ -1,6 +1,7 @@
 package com.forum.forum_draft.domain;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 
 @Data
@@ -32,14 +34,19 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "topic_name")
+    @Length(max = 255, message = "too long topic name")
+    @NotBlank(message = "add a topic name")
+    private String topicName;
+
     @Column
+    @NotBlank(message = "add a message")
     private String text;
 
     @Column
+    @Length(max = 255, message = "too long tag")
+    @NotBlank(message = "add a tag")
     private String tag;
-
-    @Column(name = "topic_name")
-    private String topicName;
 
     @Column
     private Timestamp time;

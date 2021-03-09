@@ -34,14 +34,14 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li>
-                <#if name ="unknown">
-                    <a class="nav-link">${name}</a>
-                    <#else >
+                <#if !name??>
+                    <a class="nav-link">unknown</a>
+                <#else >
                     <a class="nav-link" href="/user/${user.id}">${name}</a>
                 </#if>
             </li>
             <li>
-                <#if name ="unknown">
+                <#if !name??>
                 <#else >
                     <img src="/img/${user.pictureName}" width="30" height="30" class="rounded-circle mt-1 mr-2 "
                          style="object-fit: cover" alt="">

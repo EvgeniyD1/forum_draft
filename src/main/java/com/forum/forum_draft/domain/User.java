@@ -1,6 +1,7 @@
 package com.forum.forum_draft.domain;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,6 +17,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
@@ -29,15 +33,24 @@ public class User implements UserDetails {
     private Long id;
 
     @Column
+    @NotBlank(message = "username cannot be empty")
+    @Length(max = 50, message = "username is too long")
     private String username;
 
     @Column
+    @NotBlank(message = "password cannot be empty")
     private String password;
+
+    @Transient
+    /*@NotBlank(message = "password confirmation cannot be empty")*/
+    private String password2;
 
     @Column
     private boolean active;
 
     @Column
+    @Email(message = "email is not correct")
+    @NotBlank(message = "email cannot be empty")
     private String email;
 
     @Column(name = "phone_number")
