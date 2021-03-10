@@ -30,7 +30,7 @@ public class AdminController {
 
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userRepository.findAllUsersOrderByUsernameAsc());
         return "userList";
     }
 

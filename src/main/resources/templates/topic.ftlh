@@ -22,11 +22,13 @@
         </div>
     </div>
 
-    <a class="btn btn-outline-info my-2" data-toggle="collapse" href="#collapseExample" role="button"
-       aria-expanded="false"
-       aria-controls="collapseExample">
-        Add new Comment
-    </a>
+    <#if name??>
+        <a class="btn btn-outline-info my-2" data-toggle="collapse" href="#collapseExample" role="button"
+           aria-expanded="false"
+           aria-controls="collapseExample">
+            Add new Comment
+        </a>
+    </#if>
 
     <div class="collapse" id="collapseExample">
         <div class="form-group my-3">
@@ -46,7 +48,7 @@
 
     <#if comments??>
         <#list comments as comment>
-            <div class="card mb-2">
+            <div class="card my-1">
                 <div class="card-body">
                     <p class="card-text">${comment.text}</p>
                 </div>
@@ -59,10 +61,13 @@
                         <small class="text-muted">answer to id${comment.parentId}</small>
                     </#if>
 
-                    <br><a href="#comment${comment.id}" class="badge badge-info" data-toggle="collapse">comment</a>
+                    <#if name??>
+                        <br><a href="#comment${comment.id}" class="badge badge-info" data-toggle="collapse">comment</a>
 
-                    <#if name==comment.authorName>
-                        <a href="#commentUpdate${comment.id}" class="badge badge-info" data-toggle="collapse">update</a>
+                        <#if name==comment.authorName>
+                            <a href="#commentUpdate${comment.id}" class="badge badge-info"
+                               data-toggle="collapse">update</a>
+                        </#if>
                     </#if>
 
                     <div class="collapse" id="comment${comment.id}">
