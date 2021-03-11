@@ -21,10 +21,12 @@
             </div>
         </div>
     </div>
-    <div>
-        <form>
-            <input class="btn btn-outline-info ml-3" type="button" value="Edit"
-                   onClick='location.href="/user/userPageEdit/${user.id}"'>
-        </form>
-    </div>
+    <#if Session.SPRING_SECURITY_CONTEXT.authentication.principal.getUsername()==user.username>
+        <div>
+            <form>
+                <input class="btn btn-outline-info ml-3" type="button" value="Edit"
+                       onClick='location.href="/user/userPageEdit/${user.id}"'>
+            </form>
+        </div>
+    </#if>
 </@c.page>}

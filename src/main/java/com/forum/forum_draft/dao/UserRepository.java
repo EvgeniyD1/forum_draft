@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long>,
 
     @Query("select user from User user order by user.username asc")
     List<User> findAllUsersOrderByUsernameAsc();
+
+    List<User> findUsersByUsername(String username);
 }

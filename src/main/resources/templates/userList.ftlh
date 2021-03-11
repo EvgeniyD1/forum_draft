@@ -1,6 +1,12 @@
 <#import "parts/common.ftlh" as c>
 <@c.page>
-    <div class="ml-2 mb-2">List of Users</div>
+    <form class="form-inline mb-3" method="get" action="/admin">
+        <label>
+            <input type="search" name="search" class="form-control" placeholder="Search"
+                   value="${search!}"/>
+        </label>
+        <button type="submit" class="btn btn-outline-info ml-2">Find User</button>
+    </form>
     <table class="table">
         <thead class="thead-light">
         <tr>

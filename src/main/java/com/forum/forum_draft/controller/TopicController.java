@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/topic")
@@ -29,60 +28,47 @@ public class TopicController {
     }
 
     @GetMapping("/{message}")
-    public String getTopic(@PathVariable Message message, Model model){
+    public String getTopic(@PathVariable Message message, Model model) {
         List<Comment> comments = commentRepository.findByMessageOrderByIdDesc(message);
         model.addAttribute("message", message);
         model.addAttribute("comments", comments);
         return "topic";
     }
 
-    @PostMapping("/{message}")
+    @PostMapping("/addComment")
     public String addNewComment(
-            @PathVariable Message message,
             @AuthenticationPrincipal User user,
             @RequestParam String text,
-            @RequestParam Long parentId,
-            @RequestParam String test,
-            Model model){
-        Optional<Comment> commentOptional = commentRepository.findById(parentId);
-        Comment comment;
-        if (commentOptional.isPresent()){
-            if (test.equals("update")){
-                comment = commentOptional.orElseThrow();
-                comment.setText(text);
-                comment.setTime(new Timestamp(new Date().getTime()));
-                commentRepository.save(comment);
-            } else if (test.equals("save")){
-                comment = new Comment(message, user, text);
-                comment.setTime(new Timestamp(new Date().getTime()));
-                comment.setParentId(parentId);
-                commentRepository.save(comment);
-            }
-        } else {
-            comment = new Comment(message, user, text);
-            comment.setTime(new Timestamp(new Date().getTime()));
-            commentRepository.save(comment);
-        }
-        /*List<Comment> comments = commentRepository.findByMessageOrderByIdDesc(message);*/
-        /*model.addAttribute("comments", comments);*/
-        model.addAttribute("message", message);
-        return "redirect:/topic/{message}";
-    }
-
-/*    @PutMapping("/{message}")
-    public String updateComment(
-            @PathVariable Message message,
-            @AuthenticationPrincipal User user,
-            @RequestParam String textUpdate,
-            @RequestParam Long commentId,
-            Model model){
-        Comment comment = commentRepository.findById(commentId).orElseThrow();
-        comment.setText(textUpdate);
+            @RequestParam("messageId") Message message) {
+        Comment comment = new Comment(message, user, text);
         comment.setTime(new Timestamp(new Date().getTime()));
         commentRepository.save(comment);
-        List<Comment> comments = commentRepository.findByMessageOrderByIdDesc(message);
-        model.addAttribute("comments", comments);
-        model.addAttribute("message", message);
-        return "redirect:/topic/{message}";
-    }*/
+        return "redirect:/topic/" + message.getId().toString();
+    }
+
+    @PostMapping("/updateComment")
+    public String updateComment(
+            @RequestParam String text,
+            @RequestParam("messageId") Message message,
+            @RequestParam Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow();
+        comment.setText(text);
+        comment.setTime(new Timestamp(new Date().getTime()));
+        commentRepository.save(comment);
+        return "redirect:/topic/" + message.getId().toString();
+    }
+
+    @PostMapping("/commentingComment")
+    public String commentingComment(
+            @AuthenticationPrincipal User user,
+            @RequestParam String text,
+            @RequestParam("messageId") Message message,
+            @RequestParam Long parentId) {
+        Comment comment = new Comment(message, user, text);
+        comment.setTime(new Timestamp(new Date().getTime()));
+        comment.setParentId(parentId);
+        commentRepository.save(comment);
+        return "redirect:/topic/" + message.getId().toString();
+    }
+
 }

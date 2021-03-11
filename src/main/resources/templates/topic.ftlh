@@ -32,12 +32,11 @@
 
     <div class="collapse" id="collapseExample">
         <div class="form-group my-3">
-            <form method="post">
-                <div class="form-group">
+            <form action="/topic/addComment" method="post">
+                <div class="form-group" >
                     <input type="text" class="form-control" name="text" placeholder="Message"/>
                 </div>
-                <input type="hidden" name="test" value="">
-                <input type="hidden" name="parentId" value="${-1}">
+                <input type="hidden" name="messageId" value="${message.id}">
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <div class="form-group">
                     <button type="submit" class="btn btn-outline-info">Add</button>
@@ -72,11 +71,11 @@
 
                     <div class="collapse" id="comment${comment.id}">
                         <div class="form-group my-3">
-                            <form method="post">
+                            <form action="/topic/commentingComment" method="post">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="text" placeholder="Message"/>
                                 </div>
-                                <input type="hidden" name="test" value="save">
+                                <input type="hidden" name="messageId" value="${message.id}">
                                 <input type="hidden" name="parentId" value="${comment.id}">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                 <div class="form-group">
@@ -88,12 +87,12 @@
 
                     <div class="collapse" id="commentUpdate${comment.id}">
                         <div class="form-group my-3">
-                            <form method="post">
+                            <form action="/topic/updateComment" method="post">
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="text" value="${comment.text}"/>
                                 </div>
-                                <input type="hidden" name="test" value="update">
-                                <input type="hidden" name="parentId" value="${comment.id}">
+                                <input type="hidden" name="messageId" value="${message.id}">
+                                <input type="hidden" name="commentId" value="${comment.id}">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-outline-info">Update</button>

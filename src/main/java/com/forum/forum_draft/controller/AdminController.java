@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,8 +30,15 @@ public class AdminController {
     }
 
     @GetMapping
-    public String userList(Model model) {
-        model.addAttribute("users", userRepository.findAllUsersOrderByUsernameAsc());
+    public String userList(@RequestParam(required = false) String search, Model model) {
+        List<User> users;
+        if (search != null && !search.isEmpty()) {
+            users = userRepository.findUsersByUsername(search);
+        } else {
+            users = userRepository.findAllUsersOrderByUsernameAsc();
+        }
+        model.addAttribute("users", users);
+        model.addAttribute("search", search);
         return "userList";
     }
 
@@ -42,14 +50,13 @@ public class AdminController {
     }
 
     @PostMapping
-    public String userSave(@RequestParam String username,
-                          @RequestParam Map<String,String> form,
-                          @RequestParam("userId") User user){
-        user.setUsername(username);
+    public String userSave(
+            @RequestParam Map<String, String> form,
+            @RequestParam("userId") User user) {
         user.getRoles().clear();
         Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
         for (String key : form.keySet()) {
-            if (roles.contains(key)){
+            if (roles.contains(key)) {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
