@@ -30,6 +30,7 @@ public class UserController {
     @GetMapping("{user}")
     public String userList(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
+        model.addAttribute("messages", user.getMessages());
         return "userProfile";
     }
 

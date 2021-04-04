@@ -79,8 +79,12 @@
                     </div>
                     <div class="card-footer border-light">
                         <small class="text-muted">${message.time}</small>
-                        <small class="text-muted">${message.authorName}</small>
-                        <small class="text-muted"> #${message.tag}</small>
+                        <small class="text-muted">
+                            <a href="/user/${message.author.id}" class="text-secondary"> ${message.authorName}</a>
+                        </small>
+                        <small class="text-muted">
+                            <a href="/main?search=${message.tag}" class="text-secondary">#${message.tag}</a>
+                        </small>
                         <#if name??>
                             <#if name == message.authorName>
                                 <br><a href="/main/update/${message.id}" class="badge badge-info">update</a>

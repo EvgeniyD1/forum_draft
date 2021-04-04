@@ -7,7 +7,9 @@
         </div>
     </#if>
     <#if message??>
-        ${message!""}
+        <div class="alert alert-${messageType}">
+            ${message!""}
+        </div>
     </#if>
     <@l.login "/login" false/>
 </@c.page>

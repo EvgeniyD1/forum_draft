@@ -17,8 +17,12 @@
         </div>
         <div class="card-footer border-light">
             <small class="text-muted">${message.time}</small>
-            <small class="text-muted">${message.authorName}</small>
-            <small class="text-muted"> #${message.tag}</small>
+            <small class="text-muted">
+                <a href="/user/${message.author.id}" class="text-secondary"> ${message.authorName}</a>
+            </small>
+            <small class="text-muted">
+                <a href="/main?search=${message.tag}" class="text-secondary">#${message.tag}</a>
+            </small>
         </div>
     </div>
 
@@ -54,10 +58,12 @@
                 <div class="card-footer">
                     <small class="text-muted">id${comment.id}</small>
                     <small class="text-muted">${comment.time}</small>
-                    <small class="text-muted">${comment.authorName}</small>
+                    <small class="text-muted">
+                        <a href="/user/${comment.author.id}" class="text-secondary">${comment.authorName}</a>
+                    </small>
 
                     <#if comment.parentId??>
-                        <small class="text-muted">answer to id${comment.parentId}</small>
+                        <small class="text-muted">answer to id${comment.parentId} </small>
                     </#if>
 
                     <#if name??>

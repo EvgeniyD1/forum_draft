@@ -37,13 +37,13 @@
                 <#if !name??>
                     <a class="nav-link">unknown</a>
                 <#else >
-                    <a class="nav-link" href="/user/${user.id}">${name}</a>
+                    <a class="nav-link" href="/user/${userFromSession.id}">${name}</a>
                 </#if>
             </li>
             <li>
                 <#if !name??>
                 <#else >
-                    <img src="/img/${user.pictureName}" width="30" height="30" class="rounded-circle mt-1 mr-2 "
+                    <img src="/img/${userFromSession.pictureName}" width="30" height="30" class="rounded-circle mt-1 mr-2 "
                          style="object-fit: cover" alt="">
                 </#if>
             </li>

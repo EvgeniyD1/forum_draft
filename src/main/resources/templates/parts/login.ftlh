@@ -5,7 +5,7 @@
             <label class="col-sm-2 col-form-label" for="username">User Name:</label>
             <div class="col-sm-5 my-1">
                 <input type="text" name="username" class="form-control ${(usernameError??)?string('is-invalid','')}"
-                       placeholder="username" id="username" value="<#if user??>${user.username}</#if>"/>
+                       placeholder="username" id="username" value="<#if userFromSession??>${userFromSession.username}</#if>"/>
                 <#if usernameError??>
                     <div class="invalid-feedback">
                         ${usernameError}
@@ -43,7 +43,7 @@
                 <label class="col-sm-2 col-form-label" for="email">Email:</label>
                 <div class="col-sm-5 my-1">
                     <input type="email" name="email" class="form-control ${(emailError??)?string('is-invalid','')}"
-                           placeholder="email@email.com" id="email" value="<#if user??>${user.email}</#if>"/>
+                           placeholder="email@email.com" id="email" value="<#if userFromSession??>${userFromSession.email}</#if>"/>
                     <#if emailError??>
                         <div class="invalid-feedback">
                             ${emailError}
@@ -72,6 +72,6 @@
 <#macro logout>
     <form action="/logout" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <button type="submit" class="btn btn-outline-info"><#if !user??>Sing In <#else>Sing Out</#if></button>
+        <button type="submit" class="btn btn-outline-info"><#if !userFromSession??>Sing In <#else>Sing Out</#if></button>
     </form>
 </#macro>

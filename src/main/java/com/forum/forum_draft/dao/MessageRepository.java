@@ -16,7 +16,8 @@ public interface MessageRepository extends JpaRepository<Message, Long>,
     @Query("select message from Message message where message.tag = :tag order by message.id desc ")
     List<Message> findByTagDesc(@Param("tag") String tag);
 
-    @Query("select message from Message message order by message.id desc")
+    @Query("select message from Message message left join fetch message.author order by message.id desc")
+//    @Query("select message from Message message order by message.id desc")
     List<Message> fndAllMessagesDesc();
 
 }

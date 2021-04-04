@@ -1,10 +1,15 @@
 package com.forum.forum_draft.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -16,14 +21,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(exclude = {
+        "messages"
+})
+@ToString(exclude = {
+        "messages"
+})
 @Entity
 @Table(name = "m_users")
 public class User implements UserDetails {
@@ -40,9 +51,6 @@ public class User implements UserDetails {
     @Column
     @NotBlank(message = "password cannot be empty")
     private String password;
-
-    @Transient
-    private String password2;
 
     @Column
     private boolean active;
@@ -69,9 +77,13 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "m_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
+    @Fetch(FetchMode.SUBSELECT)
 //    !!!!!
     @Column(name = "role_name")
     private Set<Role> roles;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Message> messages;
 
     public boolean isAdmin(){
         return roles.contains(Role.ADMIN);

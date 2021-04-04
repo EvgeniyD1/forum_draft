@@ -1,6 +1,8 @@
 package com.forum.forum_draft.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
@@ -16,6 +18,12 @@ import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 
 @Data
+//@EqualsAndHashCode(exclude = {
+//        "author"
+//})
+//@ToString(exclude = {
+//        "author"
+//})
 @Entity
 @Table(name = "m_messages")
 public class Message {
