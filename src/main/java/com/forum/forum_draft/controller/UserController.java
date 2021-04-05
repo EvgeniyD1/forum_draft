@@ -3,6 +3,7 @@ package com.forum.forum_draft.controller;
 import com.forum.forum_draft.dao.UserRepository;
 import com.forum.forum_draft.domain.User;
 import com.forum.forum_draft.service.DownloadService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +29,52 @@ public class UserController {
     }
 
     @GetMapping("{user}")
-    public String userList(@PathVariable User user, Model model) {
+    public String userList(@AuthenticationPrincipal User currentUser,
+                           @PathVariable User user,
+                           Model model) {
         model.addAttribute("user", user);
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
+        model.addAttribute("isCurrentUser", currentUser.equals(user));
         model.addAttribute("messages", user.getMessages());
         return "userProfile";
+    }
+
+    @GetMapping("/subscribe/{user}")
+    public String subscribe(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user
+    ) {
+        user.getSubscribers().add(currentUser);
+        userRepository.save(user);
+        return "redirect:/user/" + user.getId();
+    }
+
+    @GetMapping("/unsubscribe/{user}")
+    public String unsubscribe(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user
+    ) {
+        user.getSubscribers().remove(currentUser);
+        userRepository.save(user);
+        return "redirect:/user/" + user.getId();
+    }
+
+    @GetMapping("/{type}/{user}")
+    public String subList(
+            @PathVariable String type,
+            @PathVariable User user,
+            Model model
+    ) {
+        model.addAttribute("userChannel", user);
+        model.addAttribute("type", type);
+        if ("subscriptions".equals(type)) {
+            model.addAttribute("users", user.getSubscriptions());
+        } else {
+            model.addAttribute("users", user.getSubscribers());
+        }
+        return "subscriptions";
     }
 
     @GetMapping("/userPageEdit/{user}")

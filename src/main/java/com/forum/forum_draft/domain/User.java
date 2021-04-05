@@ -3,6 +3,7 @@ package com.forum.forum_draft.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
@@ -21,19 +22,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @EqualsAndHashCode(exclude = {
-        "messages"
+        "messages", "subscribers", "subscriptions"
 })
 @ToString(exclude = {
-        "messages"
+        "messages", "subscribers", "subscriptions"
 })
 @Entity
 @Table(name = "m_users")
@@ -69,23 +73,36 @@ public class User implements UserDetails {
     @Column(name = "activation_code")
     private String activationCode;
 
-//    без enum
-//    @ElementCollection
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,  fetch = FetchType.EAGER, orphanRemoval = true)
-//    private Set<Role> roles = Collections.emptySet();
-
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "m_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Fetch(FetchMode.SUBSELECT)
-//    !!!!!
+    @BatchSize(size=10)
     @Column(name = "role_name")
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Message> messages;
 
-    public boolean isAdmin(){
+    @ManyToMany
+    @JoinTable(
+            name = "m_user_subscriptions",
+            joinColumns = {@JoinColumn(name = "subscriber_id")},
+            inverseJoinColumns = {@JoinColumn(name = "subscription_id")}
+    )
+//    @Fetch(FetchMode.SUBSELECT)
+    private Set<User> subscribers = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "m_user_subscriptions",
+            joinColumns = {@JoinColumn(name = "subscription_id")},
+            inverseJoinColumns = {@JoinColumn(name = "subscriber_id")}
+    )
+//    @Fetch(FetchMode.SUBSELECT)
+    private Set<User> subscriptions = new HashSet<>();
+
+    public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
     }
 
