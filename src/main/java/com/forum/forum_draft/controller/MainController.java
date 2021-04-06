@@ -4,6 +4,10 @@ import com.forum.forum_draft.dao.MessageRepository;
 import com.forum.forum_draft.domain.Message;
 import com.forum.forum_draft.domain.User;
 import com.forum.forum_draft.service.DownloadService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,20 +42,25 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String mainPage(@RequestParam(required = false) String search, Model model) {
-        List<Message> messages;
+    public String mainPage(
+            @RequestParam(required = false) String search,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 9) Pageable pageable,
+            Model model) {
+        Page<Message> messages;
         if (search != null && !search.isEmpty()) {
-            messages = messageRepository.findByTagDesc(search);
+            messages = messageRepository.findByTag(search, pageable);
         } else {
-            messages = messageRepository.fndAllMessagesDesc();
+            messages = messageRepository.findAllMessages(pageable);
         }
         model.addAttribute("messages", messages);
+        model.addAttribute("url", "/main");
         model.addAttribute("search", search);
         return "main";
     }
 
     @PostMapping("/main")
     public String addNewMessage(
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 9) Pageable pageable,
             @AuthenticationPrincipal User user,
             @Valid Message message,
             BindingResult bindingResult, Model model,
@@ -69,8 +78,9 @@ public class MainController {
             messageRepository.save(message);
             model.addAttribute("message", null);
         }
-        List<Message> messages = messageRepository.fndAllMessagesDesc();
+        Page<Message> messages = messageRepository.findAllMessages(pageable);
         model.addAttribute("messages", messages);
+        model.addAttribute("url", "/main");
         return "main";
     }
 

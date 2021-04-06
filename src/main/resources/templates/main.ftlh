@@ -1,5 +1,6 @@
 <#import "parts/common.ftlh" as c>
 <#include "parts/security.ftlh">
+<#import "parts/pagination.ftlh" as p>
 <@c.page>
     <#if isAdmin==true>
         <a class="btn btn-outline-info mx-3 mb-2" data-toggle="collapse" href="#collapseExample" role="button"
@@ -59,9 +60,8 @@
             </form>
         </div>
     </div>
-
     <div class="row row-cols-1 row-cols-md-3 mx-0">
-        <#list messages as message>
+        <#list messages.content as message>
             <div class="col my-2">
                 <div class="card h-100 border-light">
                     <#if message.filename??>
@@ -96,4 +96,5 @@
         <#else>No message
         </#list>
     </div>
+<@p.pagination url messages/>
 </@c.page>
