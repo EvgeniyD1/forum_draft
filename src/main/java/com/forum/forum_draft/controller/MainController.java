@@ -65,10 +65,14 @@ public class MainController {
             @Valid Message message,
             BindingResult bindingResult, Model model,
             @RequestParam("file") MultipartFile file) throws IOException {
+        model.addAttribute("url", "/main");
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
+            Page<Message> messages = messageRepository.findAllMessages(pageable);
+            model.addAttribute("messages", messages);
+            return "main";
         } else {
             message.setAuthor(user);
             message.setTime(new Timestamp(new Date().getTime()));
@@ -78,10 +82,7 @@ public class MainController {
             messageRepository.save(message);
             model.addAttribute("message", null);
         }
-        Page<Message> messages = messageRepository.findAllMessages(pageable);
-        model.addAttribute("messages", messages);
-        model.addAttribute("url", "/main");
-        return "main";
+        return "redirect:" + "/main";
     }
 
     @GetMapping("/main/update/{message}")
