@@ -1,9 +1,12 @@
 package com.forum.forum_draft.controller;
 
-import com.forum.forum_draft.dao.UserRepository;
 import com.forum.forum_draft.domain.Role;
 import com.forum.forum_draft.domain.User;
+import com.forum.forum_draft.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,20 +26,15 @@ import java.util.stream.Collectors;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public AdminController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AdminController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public String userList(@RequestParam(required = false) String search, Model model) {
-        List<User> users;
-        if (search != null && !search.isEmpty()) {
-            users = userRepository.findUsersByUsername(search);
-        } else {
-            users = userRepository.findAllUsersOrderByUsernameAsc();
-        }
+        List<User> users = userService.adminList(search);
         model.addAttribute("users", users);
         model.addAttribute("search", search);
         return "userList";
@@ -60,7 +58,9 @@ public class AdminController {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
-        userRepository.save(user);
+        userService.save(user);
+        userService.expireUserSessions(user.getUsername());
         return "redirect:/admin";
     }
+
 }

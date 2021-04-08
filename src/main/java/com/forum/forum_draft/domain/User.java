@@ -90,7 +90,6 @@ public class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "subscriber_id")},
             inverseJoinColumns = {@JoinColumn(name = "subscription_id")}
     )
-//    @Fetch(FetchMode.SUBSELECT)
     private Set<User> subscribers = new HashSet<>();
 
     @ManyToMany
@@ -99,7 +98,6 @@ public class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "subscription_id")},
             inverseJoinColumns = {@JoinColumn(name = "subscriber_id")}
     )
-//    @Fetch(FetchMode.SUBSELECT)
     private Set<User> subscriptions = new HashSet<>();
 
     public boolean isAdmin() {

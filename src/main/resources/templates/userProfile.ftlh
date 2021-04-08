@@ -1,13 +1,13 @@
 <#import "parts/common.ftlh" as c>
 <#include "parts/security.ftlh">
 <@c.page>
-    <div class="card border-light mb-3" style="max-width: 70%">
+    <div class="card border-light mb-3" style="max-width: 100%">
         <div class="row no-gutters">
-            <div class="col-md-7">
+            <div class="col-md-5">
                 <img src="/img/${user.pictureName}" class="card-img" alt="" height="250"
                      style="object-fit: cover">
             </div>
-            <div class="col-md-5">
+            <div class="col-md-7">
                 <div class="card-body">
                     <div class="row">
                         <div class="p-2" style="width: 100px">Name</div>
@@ -22,7 +22,7 @@
                         <div class="p-2">${user.phoneNumber}</div>
                     </div>
                     <div class="row">
-                        <#if name==user.username>
+                        <#if cerrentUser==user.getId()>
                             <div class="p-2">
                                 <form>
                                     <input class="btn btn-outline-info" type="button" value="Edit"
@@ -42,7 +42,7 @@
                     <div class="card-title">Subscribers</div>
                     <h3 class="card-text">
                         <a href="/user/subscribers/${user.id}">${subscribersCount}</a>
-                        <#if !isCurrentUser>
+                        <#if cerrentUser!=user.getId()>
                             <#if isSubscriber>
                                 <a class="btn btn btn-outline-info" href="/user/unsubscribe/${user.id}">Unsubscribe</a>
                             <#else>
@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <#list messages as message>
+    <#list messages?sort_by("time")?reverse as message>
         <div class="card my-3">
             <#if message.filename?? >
                 <img src="/img/${message.filename}" class="card-img" alt="" height="250"

@@ -1,9 +1,10 @@
 package com.forum.forum_draft.controller;
 
-import com.forum.forum_draft.dao.CommentRepository;
 import com.forum.forum_draft.domain.Comment;
 import com.forum.forum_draft.domain.Message;
 import com.forum.forum_draft.domain.User;
+import com.forum.forum_draft.service.CommentService;
+import com.forum.forum_draft.service.MessageService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,15 +22,18 @@ import java.util.List;
 @RequestMapping("/topic")
 public class TopicController {
 
-    private final CommentRepository commentRepository;
+    private final CommentService commentService;
+    private final MessageService messageService;
 
-    public TopicController(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
+    public TopicController(CommentService commentService, MessageService messageService) {
+        this.commentService = commentService;
+        this.messageService = messageService;
     }
 
-    @GetMapping("/{message}")
-    public String getTopic(@PathVariable Message message, Model model) {
-        List<Comment> comments = commentRepository.findByMessageOrderByIdDesc(message);
+    @GetMapping("/{messageId}")
+    public String getTopic(@PathVariable Long messageId, Model model) {
+        Message message = messageService.findById(messageId).orElseThrow();
+        List<Comment> comments = commentService.findByMessageOrderByIdDesc(message);
         model.addAttribute("message", message);
         model.addAttribute("comments", comments);
         return "topic";
@@ -42,7 +46,7 @@ public class TopicController {
             @RequestParam("messageId") Message message) {
         Comment comment = new Comment(message, user, text);
         comment.setTime(new Timestamp(new Date().getTime()));
-        commentRepository.save(comment);
+        commentService.save(comment);
         return "redirect:/topic/" + message.getId().toString();
     }
 
@@ -51,10 +55,10 @@ public class TopicController {
             @RequestParam String text,
             @RequestParam("messageId") Message message,
             @RequestParam Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow();
+        Comment comment = commentService.findById(commentId).orElseThrow();
         comment.setText(text);
         comment.setTime(new Timestamp(new Date().getTime()));
-        commentRepository.save(comment);
+        commentService.save(comment);
         return "redirect:/topic/" + message.getId().toString();
     }
 
@@ -67,7 +71,7 @@ public class TopicController {
         Comment comment = new Comment(message, user, text);
         comment.setTime(new Timestamp(new Date().getTime()));
         comment.setParentId(parentId);
-        commentRepository.save(comment);
+        commentService.save(comment);
         return "redirect:/topic/" + message.getId().toString();
     }
 

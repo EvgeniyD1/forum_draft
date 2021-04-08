@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MessageRepository extends JpaRepository<Message, Long>,
         CrudRepository<Message, Long>,
         PagingAndSortingRepository<Message, Long> {
@@ -19,8 +21,5 @@ public interface MessageRepository extends JpaRepository<Message, Long>,
     countQuery = "select count (message) from Message message")
 //    countQuery нужен для работы Page с одним параметром pageable
     Page<Message> findAllMessages(Pageable pageable);
-
-//    @Query("select message from Message message left join fetch message.author order by message.id desc")
-//    Page<Message> findAllMessages();
 
 }

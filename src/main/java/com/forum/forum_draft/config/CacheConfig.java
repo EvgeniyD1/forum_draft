@@ -11,19 +11,19 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class CacheConfig {
 
-    @Bean
-    public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("cache");
-        cacheManager.setCaffeine(cacheProperties());
-        return cacheManager;
-    }
-
-    public Caffeine<Object, Object> cacheProperties() {
-        return Caffeine.newBuilder()
-                .initialCapacity(100)
-                .maximumSize(500)
-                .expireAfterAccess(10, TimeUnit.MINUTES)
-                .weakKeys()
-                .recordStats();
-    }
+//    @Bean
+//    public CacheManager cacheManager() {
+//        CaffeineCacheManager cacheManager = new CaffeineCacheManager("user","message","comment");
+//        cacheManager.setCaffeine(cacheProperties());
+//        return cacheManager;
+//    }
+//
+//    public Caffeine<Object, Object> cacheProperties() {
+//        return Caffeine.newBuilder()
+//                .initialCapacity(100)
+//                .maximumSize(500)
+//                .expireAfterAccess(10, TimeUnit.MINUTES)
+//                .weakKeys()
+//                .recordStats();
+//    }
 }

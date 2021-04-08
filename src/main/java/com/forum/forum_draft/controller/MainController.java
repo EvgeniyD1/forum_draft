@@ -1,9 +1,9 @@
 package com.forum.forum_draft.controller;
 
-import com.forum.forum_draft.dao.MessageRepository;
 import com.forum.forum_draft.domain.Message;
 import com.forum.forum_draft.domain.User;
 import com.forum.forum_draft.service.DownloadService;
+import com.forum.forum_draft.service.MessageService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,17 +23,16 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Controller
 public class MainController {
 
-    private final MessageRepository messageRepository;
+    private final MessageService messageService;
     private final DownloadService downloadService;
 
-    public MainController(MessageRepository messageRepository, DownloadService downloadService) {
-        this.messageRepository = messageRepository;
+    public MainController(MessageService messageService, DownloadService downloadService) {
+        this.messageService = messageService;
         this.downloadService = downloadService;
     }
 
@@ -46,12 +46,7 @@ public class MainController {
             @RequestParam(required = false) String search,
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 9) Pageable pageable,
             Model model) {
-        Page<Message> messages;
-        if (search != null && !search.isEmpty()) {
-            messages = messageRepository.findByTag(search, pageable);
-        } else {
-            messages = messageRepository.findAllMessages(pageable);
-        }
+        Page<Message> messages = messageService.messageList(search, pageable);
         model.addAttribute("messages", messages);
         model.addAttribute("url", "/main");
         model.addAttribute("search", search);
@@ -70,16 +65,16 @@ public class MainController {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
             model.addAttribute("message", message);
-            Page<Message> messages = messageRepository.findAllMessages(pageable);
+            Page<Message> messages = messageService.findAllMessages(pageable);
             model.addAttribute("messages", messages);
             return "main";
         } else {
             message.setAuthor(user);
             message.setTime(new Timestamp(new Date().getTime()));
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
+            if (file != null && !ObjectUtils.isEmpty(file.getOriginalFilename())) {
                 message.setFilename(downloadService.getNewFileName(file));
             }
-            messageRepository.save(message);
+            messageService.save(message);
             model.addAttribute("message", null);
         }
         return "redirect:" + "/main";
@@ -106,16 +101,16 @@ public class MainController {
             model.addAttribute("message", message);
             return "updateMessage";
         } else {
-            Message mFDb = messageRepository.findById(messageId).orElseThrow();
+            Message mFDb = messageService.findById(messageId).orElseThrow();
             message.setId(mFDb.getId());
             message.setAuthor(mFDb.getAuthor());
             message.setTime(new Timestamp(new Date().getTime()));
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
+            if (file != null && !ObjectUtils.isEmpty(file.getOriginalFilename())) {
                 message.setFilename(downloadService.getNewFileName(file));
             } else {
                 message.setFilename(mFDb.getFilename());
             }
-            messageRepository.save(message);
+            messageService.save(message);
             model.addAttribute("message", null);
         }
         return "redirect:" + "/main";
