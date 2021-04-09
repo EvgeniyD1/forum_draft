@@ -35,7 +35,7 @@
         <ul class="navbar-nav ml-auto">
             <li>
                 <#if !name??>
-                    <a class="nav-link">unknown</a>
+                    <#--<a class="nav-link">unknown</a>-->
                 <#else >
                     <a class="nav-link" href="/user/${userFromSession.id}">${name}</a>
                 </#if>

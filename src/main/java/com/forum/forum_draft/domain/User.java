@@ -34,10 +34,10 @@ import java.util.Set;
 
 @Data
 @EqualsAndHashCode(exclude = {
-        "messages", "subscribers", "subscriptions"
+        "messages", "subscribers", "subscriptions", "roles"
 })
 @ToString(exclude = {
-        "messages", "subscribers", "subscriptions"
+        "messages", "subscribers", "subscriptions", "roles"
 })
 @Entity
 @Table(name = "m_users")
@@ -77,7 +77,7 @@ public class User implements UserDetails {
     @CollectionTable(name = "m_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Fetch(FetchMode.SUBSELECT)
-    @BatchSize(size=10)
+    @BatchSize(size = 10)
     @Column(name = "role_name")
     private Set<Role> roles;
 

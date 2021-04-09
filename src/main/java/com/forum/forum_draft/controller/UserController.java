@@ -105,6 +105,7 @@ public class UserController {
             user.setPictureName(downloadService.getNewFileName(file));
         }
         userService.save(user);
+        /*пусть кикает, зато навбар обновится*/
         userService.logout();
         return "redirect:/login";
     }

@@ -20,6 +20,7 @@
 <div style="background-color: lightgray;">
     <div class="container style1" style="min-height: 100vh">
         <div class="py-4">
+            <a href="#" title="To the top" class="top-button">^ Top ^</a>
             <#nested>
         </div>
     </div>

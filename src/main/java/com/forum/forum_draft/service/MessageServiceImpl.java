@@ -2,15 +2,20 @@ package com.forum.forum_draft.service;
 
 import com.forum.forum_draft.dao.MessageRepository;
 import com.forum.forum_draft.domain.Message;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@CacheConfig(cacheNames = {"message"})
 public class MessageServiceImpl  implements MessageService{
 
     private final MessageRepository messageRepository;
@@ -39,6 +44,7 @@ public class MessageServiceImpl  implements MessageService{
 
     @Override
     @CacheEvict(value = "message", allEntries = true)
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     public void save(Message message) {
         messageRepository.save(message);
     }

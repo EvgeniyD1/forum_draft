@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RedirectInterceptor extends HandlerInterceptorAdapter {
+
+    /*нормально не работает, лагают коллапсирующие элементы*/
     @Override
     public void postHandle(
             HttpServletRequest request,

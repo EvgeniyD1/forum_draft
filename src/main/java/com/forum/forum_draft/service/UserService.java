@@ -3,15 +3,17 @@ package com.forum.forum_draft.service;
 import com.forum.forum_draft.dao.UserRepository;
 import com.forum.forum_draft.domain.Role;
 import com.forum.forum_draft.domain.User;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.servlet.ServletException;
@@ -22,43 +24,26 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@CacheConfig(cacheNames = {"user"})
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final MailSender mailSender;
     private final PasswordEncoder passwordEncoder;
     private final HttpServletRequest httpServletRequest;
-    private final SessionRegistry sessionRegistry;
 
     public UserService(UserRepository userRepository,
                        MailSender mailSender,
                        PasswordEncoder passwordEncoder,
-                       HttpServletRequest httpServletRequest,
-                       SessionRegistry sessionRegistry) {
+                       HttpServletRequest httpServletRequest) {
         this.userRepository = userRepository;
         this.mailSender = mailSender;
         this.passwordEncoder = passwordEncoder;
         this.httpServletRequest = httpServletRequest;
-        this.sessionRegistry = sessionRegistry;
     }
 
     public void logout() throws ServletException {
         httpServletRequest.logout();
-    }
-
-    public void expireUserSessions(String username) {
-        for (Object principal : sessionRegistry.getAllPrincipals()) {
-            if (principal instanceof User) {
-                UserDetails userDetails = (UserDetails) principal;
-                if (userDetails.getUsername().equals(username)) {
-                    for (SessionInformation information : sessionRegistry
-                            .getAllSessions(userDetails, true)) {
-                        //Заветное действие
-                        information.expireNow();
-                    }
-                }
-            }
-        }
     }
 
     @Cacheable(value = "user")
@@ -81,6 +66,7 @@ public class UserService implements UserDetailsService {
     }
 
     @CacheEvict(value = "user", allEntries = true)
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     public boolean addUser(User user){
         User byUsername = findByUsername(user.getUsername());
         if (byUsername!=null){
@@ -106,6 +92,7 @@ public class UserService implements UserDetailsService {
     }
 
     @CacheEvict(value = "user", allEntries = true)
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     public boolean activateUser(String code) {
         User user = findByActivationCode(code);
         if (user==null){
@@ -143,6 +130,7 @@ public class UserService implements UserDetailsService {
     }
 
     @CacheEvict(value = "user", allEntries = true)
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
     public void save(User user) {
         userRepository.save(user);
     }

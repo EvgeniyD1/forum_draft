@@ -2,11 +2,11 @@ package com.forum.forum_draft.controller;
 
 import com.forum.forum_draft.domain.Role;
 import com.forum.forum_draft.domain.User;
+import com.forum.forum_draft.service.SessionService;
 import com.forum.forum_draft.service.UserService;
+import com.sun.xml.bind.v2.TODO;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +27,11 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     private final UserService userService;
+    private final SessionService sessionService;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, SessionService sessionService) {
         this.userService = userService;
+        this.sessionService = sessionService;
     }
 
     @GetMapping
@@ -59,7 +61,9 @@ public class AdminController {
             }
         }
         userService.save(user);
-        userService.expireUserSessions(user.getUsername());
+        /*а нужен ли экспаринг прямо сейчас, @EqualsAndHashCode(exclude = {"roles"}) прекрасно работает
+        и нет богов с сессией (если приложение ляжет, то придется перелогиниваться)*/
+        sessionService.expireUserSessions(user.getUsername());
         return "redirect:/admin";
     }
 
