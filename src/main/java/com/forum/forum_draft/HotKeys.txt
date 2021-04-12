@@ -2,3 +2,4 @@ Ctrl + Alt + l - выравнивание кода
 Ctrl + Alt + o - удалить ненужные импорты
 Ctrl + Shift + F9 - обновить
 Ctrl + Shift + o - переводчик
+Ctrl + Space - подтянить метод

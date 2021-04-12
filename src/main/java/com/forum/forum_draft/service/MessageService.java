@@ -1,6 +1,7 @@
 package com.forum.forum_draft.service;
 
 import com.forum.forum_draft.domain.Message;
+import com.forum.forum_draft.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,4 +18,6 @@ public interface MessageService {
     void save(Message message);
 
     Page<Message> messageList(String search, Pageable pageable);
+
+    Page<Message> findAllBySubscribe(User user, Pageable pageable);
 }

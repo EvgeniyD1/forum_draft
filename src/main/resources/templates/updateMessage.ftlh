@@ -1,14 +1,16 @@
 <#import "parts/common.ftlh" as c>
+<#include "parts/security.ftlh">
 <@c.page>
+    <#if cerrentUser!=message.author.id>
+        <b id="not-authorised">Not authorised</b>
+    <#else >
     <div class="form-group">
-        <form action="/main/update/${message.id}" method="post" enctype="multipart/form-data">
+        <form action="/main/update/${message.id}" method="post" enctype="multipart/form-data" id="message-update-form">
             <div class="form-group">
                 <label for="topicName">Topic Name</label>
                 <textarea type="text" class="form-control ${(topicNameError??)?string('is-invalid','')}"
                           name="topicName" placeholder="Topic Name" id="topicName" rows="1"
-                          style="overflow: hidden">
-                        <#if message??>${message.topicName}</#if>
-                    </textarea>
+                          style="overflow: hidden"><#if message??>${message.topicName}</#if></textarea>
                 <#if topicNameError??>
                     <div class="invalid-feedback">
                         ${topicNameError}
@@ -18,9 +20,8 @@
             <div class="form-group">
                 <label for="text">Text</label>
                 <textarea type="text" class="form-control ${(textError??)?string('is-invalid','')}"
-                          name="text" placeholder="Text" id="text" rows="4" style="overflow: hidden">
-                        <#if message??>${message.text}</#if>
-                    </textarea>
+                          name="text" placeholder="Text" id="text" rows="4"
+                          style="overflow: hidden"><#if message??>${message.text}</#if></textarea>
                 <#if textError??>
                     <div class="invalid-feedback">
                         ${textError}
@@ -40,11 +41,12 @@
             <div class="form-group">
                 <div class="custom-file">
                     <label <#--class="custom-file-label"--> for="customFile">Picture</label>
-                    <input type="file" name="file" class="form-control-file" id="customFile">
+                    <input type="file" name="file" class="form-control-file" id="customFile"/>
                 </div>
             </div>
-            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <button type="submit" class="btn btn-outline-info">Update</button>
         </form>
     </div>
+    </#if>
 </@c.page>

@@ -3,7 +3,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a class="navbar-brand my-0 h1" href="/">
         <img src="/static/logo-2.png" width="30" height="30" class="d-inline-block align-content-center"
-             alt="" loading="lazy">
+             alt="" loading="lazy"/>
         <span class="text-white-50">Forum_Draft</span>
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -19,6 +19,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="/main">Main</a>
             </li>
+            <#if userFromSession??>
+                <li class="nav-item">
+                    <a class="nav-link" href="/main/sub/${cerrentUser}">My News</a>
+                </li>
+            </#if>
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">Admin Page</a>
@@ -35,16 +40,16 @@
         <ul class="navbar-nav ml-auto">
             <li>
                 <#if !name??>
-                    <#--<a class="nav-link">unknown</a>-->
-                <#else >
-                    <a class="nav-link" href="/user/${userFromSession.id}">${name}</a>
+                    <#--<a class="nav-link">unknown user</a>-->
+                <#else>
+                    <a class="nav-link" href="/user/${cerrentUser}">${name}</a>
                 </#if>
             </li>
             <li>
                 <#if !name??>
-                <#else >
+                <#else>
                     <img src="/img/${userFromSession.pictureName}" width="30" height="30" class="rounded-circle mt-1 mr-2 "
-                         style="object-fit: cover" alt="">
+                         style="object-fit: cover" alt=""/>
                 </#if>
             </li>
             <li>

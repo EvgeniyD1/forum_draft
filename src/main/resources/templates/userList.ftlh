@@ -7,7 +7,7 @@
         </label>
         <button type="submit" class="btn btn-outline-info ml-2">Find User</button>
     </form>
-    <table class="table">
+    <table class="table" id="user-data">
         <thead class="thead-light">
         <tr>
             <th scope="col">#</th>
@@ -20,18 +20,14 @@
         </thead>
         <tbody>
         <#list users as user>
-            <tr>
+            <tr data-id="${user.id}">
                 <th scope="row">${user.id}</th>
                 <td>
                     <a href="/user/${user.id}">${user.username}</a>
                 </td>
                 <td>${user.email}</td>
                 <td>${user.phoneNumber}</td>
-                <td>
-                    <#list user.roles as role>
-                        ${role}
-                    </#list>
-                </td>
+                <td><#list user.roles as role>${role} </#list></td>
                 <td>
                     <a href="/admin/${user.id}">Edit</a>
                 </td>

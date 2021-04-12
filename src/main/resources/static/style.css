@@ -12,18 +12,18 @@ body {
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .top-button {
-    width:100px;
+    width:50px;
     border:2px solid #ccc;
     background:#f7f7f7;
     text-align:center;
     padding:10px;
     position:fixed;
     bottom:50px;
-    right:50px;
+    right:20px;
     cursor:pointer;
     color:#333;
     font-family: verdana, serif;
@@ -33,3 +33,9 @@ body {
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
 }
+
+textarea {
+    vertical-align:top;
+    display: block;
+}
+

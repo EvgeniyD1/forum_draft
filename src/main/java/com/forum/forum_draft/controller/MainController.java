@@ -4,6 +4,7 @@ import com.forum.forum_draft.domain.Message;
 import com.forum.forum_draft.domain.User;
 import com.forum.forum_draft.service.DownloadService;
 import com.forum.forum_draft.service.MessageService;
+import com.forum.forum_draft.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,10 +31,14 @@ public class MainController {
 
     private final MessageService messageService;
     private final DownloadService downloadService;
+    private final UserService userService;
 
-    public MainController(MessageService messageService, DownloadService downloadService) {
+    public MainController(MessageService messageService,
+                          DownloadService downloadService,
+                          UserService userService) {
         this.messageService = messageService;
         this.downloadService = downloadService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -50,6 +55,18 @@ public class MainController {
         model.addAttribute("messages", messages);
         model.addAttribute("url", "/main");
         model.addAttribute("search", search);
+        return "main";
+    }
+
+    @GetMapping("/main/sub/{userId}")
+    public String subMessage(
+            @PathVariable Long userId,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 9) Pageable pageable,
+            Model model){
+        User user = userService.findById(userId).orElseThrow();
+        Page<Message> allBySubscribe = messageService.findAllBySubscribe(user, pageable);
+        model.addAttribute("messages", allBySubscribe);
+        model.addAttribute("url", "/main/sub/"+userId);
         return "main";
     }
 

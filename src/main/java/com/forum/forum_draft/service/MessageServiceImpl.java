@@ -2,6 +2,7 @@ package com.forum.forum_draft.service;
 
 import com.forum.forum_draft.dao.MessageRepository;
 import com.forum.forum_draft.domain.Message;
+import com.forum.forum_draft.domain.User;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -57,6 +58,12 @@ public class MessageServiceImpl  implements MessageService{
         } else {
             return findAllMessages(pageable);
         }
+    }
+
+    @Override
+    @Cacheable(value = "message")
+    public Page<Message> findAllBySubscribe(User user, Pageable pageable) {
+        return messageRepository.findAllBySubscribe(user, pageable);
     }
 
 

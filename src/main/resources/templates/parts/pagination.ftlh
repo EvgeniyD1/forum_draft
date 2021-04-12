@@ -34,7 +34,7 @@
                         </li>
                     <#else >
                         <li class="page-item">
-                            <a class="page-link" href="${url}?page=${p-1}&size=${page.getSize()}">${p}</a>
+                            <a class="page-link" href="${url}?page=${p-1}&amp;size=${page.getSize()}">${p}</a>
                         </li>
                     </#if>
                 </#list>
@@ -50,11 +50,11 @@
                         </li>
                     <#else >
                         <li class="page-item">
-                            <a class="page-link" href="${url}?page=${page.getNumber()}&size=${e}">${e}</a>
+                            <a class="page-link" href="${url}?page=${page.getNumber()}&amp;size=${e}">${e}</a>
                         </li>
                     </#if>
                 </#list>
             </ul>
         </nav>
     </div>
-</#macro>P
+</#macro>
